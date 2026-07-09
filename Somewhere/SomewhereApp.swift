@@ -10,22 +10,30 @@ import SwiftData
 
 @main
 struct SomewhereApp: App {
-    var sharedModelContainer: ModelContainer = {
+    let sharedModelContainer: ModelContainer
+    private let cornerDrawerController: CornerDrawerController
+
+    init() {
         let schema = Schema([
             StashItem.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
         do {
-            return try ModelContainer(for: schema, configurations: [modelConfiguration])
+            let modelContainer = try ModelContainer(for: schema, configurations: [modelConfiguration])
+            sharedModelContainer = modelContainer
+            cornerDrawerController = CornerDrawerController()
         } catch {
             fatalError("Could not create ModelContainer: \(error)")
         }
-    }()
+    }
 
     var body: some Scene {
         WindowGroup(id: "archive") {
             ContentView()
+                .onAppear {
+                    cornerDrawerController.start()
+                }
         }
         .modelContainer(sharedModelContainer)
 

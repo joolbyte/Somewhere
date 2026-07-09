@@ -41,22 +41,23 @@ archive before saving an item.
 
 Somewhere has three complementary surfaces.
 
-### 1. Corner drawer — immediate capture
+### 1. Corner veil — immediate capture
 
-The signature interaction is a small floating drawer near the **upper-right
-edge, just below the macOS menu bar**. It must not occupy the literal top-right
-corner, which belongs to system menu items and Control Center.
+The signature interaction is a full-height, borderless capture veil anchored
+flush to the **right edge of the active display**. It is not a floating card:
+its material is most visible at the right edge and dissolves gradually to
+nothing toward the left.
 
 When the pointer approaches the activation area during a drag:
 
-1. A subtle Somewhere tab appears.
-2. The tab softly expands into a translucent drop drawer.
-3. The user drops the file, image, text, or URL.
+1. A translucent, blurred right-edge veil softly fades in.
+2. A restrained Somewhere drop affordance appears within the opaque right side.
+3. The user drops the file, image, text, or URL into that right-side area.
 4. The item is saved immediately and shown as a card.
 5. An optional low-pressure note field appears; no organization is required.
 
-The drawer should fade and slightly scale into view. It should fade away when
-the pointer leaves, unless the user is interacting with it.
+The veil should fade into view without a visible card edge or surrounding gap.
+It should fade away when the pointer leaves its right-side interaction area.
 
 **Purpose:** “Drop it here.”
 
