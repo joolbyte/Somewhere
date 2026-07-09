@@ -39,7 +39,8 @@ archive before saving an item.
 
 ## Experience model
 
-Somewhere has three complementary surfaces.
+Somewhere has one content surface: the corner veil. It is a utility, not a
+conventional windowed app.
 
 ### 1. Corner veil — immediate capture
 
@@ -62,24 +63,10 @@ It should fade away when the pointer leaves its right-side interaction area.
 
 **Purpose:** “Drop it here.”
 
-### 2. Menu-bar panel — quick access
-
-The menu-bar icon opens a compact panel for:
-
-- Stashing the clipboard.
-- Writing or pasting a quick item.
-- Dropping content directly into Somewhere.
-- Seeing a few recent items.
-- Opening the full archive.
-
-**Purpose:** “Save something now.”
-
-### 3. Full window — personal archive
-
-The full window is a calm, resizable home for browsing the collection. It
-contains search, recent items, Shuffle, and Time Travel. It is not a dashboard.
-
-**Purpose:** “Find something—or rediscover something.”
+The menu-bar icon is a minimal system control (for example, to quit or later
+open settings); it is not a second Somewhere interface. There is no full archive
+window. Browsing, search, capture, and rediscovery all happen in the right-edge
+sidebar.
 
 ## Browsing modes
 
