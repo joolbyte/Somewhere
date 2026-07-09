@@ -51,7 +51,8 @@ nothing toward the left.
 When the pointer approaches the activation area during a drag:
 
 1. A translucent, blurred right-edge veil softly fades in.
-2. A restrained Somewhere drop affordance appears within the opaque right side.
+2. The opaque right side contains only the Somewhere wordmark and a native
+   macOS search field—no center copy or decorative capture icon.
 3. The user drops the file, image, text, or URL into that right-side area.
 4. The item is saved immediately and shown as a card.
 5. An optional low-pressure note field appears; no organization is required.
