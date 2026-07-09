@@ -12,15 +12,29 @@ import SwiftUI
 final class CornerDrawerController: NSObject {
     private enum Layout {
         static let veilWidth: CGFloat = 560
-        static let interactiveWidth: CGFloat = 292
-        static let activationWidth: CGFloat = 26
-        static let activationHeight: CGFloat = 30
-        static let dismissalDelay: TimeInterval = 0.32
+        static let interactiveWidth: CGFloat = 340
+        static let activationWidth: CGFloat = 56
+        static let activationHeight: CGFloat = 48
+        static let trackingInterval: TimeInterval = 1.0 / 60.0
+        static let dismissalDelay: TimeInterval = 0.10
+        static let revealDuration: TimeInterval = 0.12
+        static let dismissalDuration: TimeInterval = 0.10
+        static let revealGraceDuration: TimeInterval = 0.18
+    }
+
+    private enum PresentationState {
+        case hidden
+        case revealing
+        case visible
+        case dismissing
     }
 
     private let panel: NSPanel
     private var mouseMonitorTimer: Timer?
     private var pendingDismissal: DispatchWorkItem?
+    private var presentationState: PresentationState = .hidden
+    private var activeTransitionID = UUID()
+    private var revealGraceEndsAt = Date.distantPast
     private var hasStarted = false
 
     override init() {
@@ -53,14 +67,18 @@ final class CornerDrawerController: NSObject {
         guard !hasStarted else { return }
         hasStarted = true
 
-        mouseMonitorTimer = Timer.scheduledTimer(
-            timeInterval: 0.08,
+        let timer = Timer(
+            timeInterval: Layout.trackingInterval,
             target: self,
             selector: #selector(checkPointerLocation),
             userInfo: nil,
             repeats: true
         )
-        mouseMonitorTimer?.tolerance = 0.02
+        timer.tolerance = 0.004
+        RunLoop.main.add(timer, forMode: .common)
+        mouseMonitorTimer = timer
+
+        updateForCurrentPointerLocation()
     }
 
     @objc private func checkPointerLocation() {
@@ -94,21 +112,33 @@ final class CornerDrawerController: NSObject {
         pendingDismissal = nil
         position(on: screen)
 
-        if panel.isVisible {
-            NSAnimationContext.runAnimationGroup { context in
-                context.duration = 0.12
-                context.timingFunction = CAMediaTimingFunction(name: .easeOut)
-                panel.animator().alphaValue = 1
-            }
-            return
+        switch presentationState {
+        case .hidden:
+            panel.alphaValue = 0
+            panel.orderFront(nil)
+            revealGraceEndsAt = .now.addingTimeInterval(Layout.revealGraceDuration)
+            reveal()
+        case .dismissing:
+            reveal()
+        case .revealing, .visible:
+            break
         }
+    }
 
-        panel.alphaValue = 0
-        panel.orderFront(nil)
+    private func reveal() {
+        presentationState = .revealing
+        let transitionID = UUID()
+        activeTransitionID = transitionID
+
         NSAnimationContext.runAnimationGroup { context in
-            context.duration = 0.18
+            context.duration = Layout.revealDuration
             context.timingFunction = CAMediaTimingFunction(name: .easeOut)
             panel.animator().alphaValue = 1
+        } completionHandler: { [weak self] in
+            Task { @MainActor in
+                guard let self, self.activeTransitionID == transitionID else { return }
+                self.presentationState = .visible
+            }
         }
     }
 
@@ -118,7 +148,9 @@ final class CornerDrawerController: NSObject {
             x: screenFrame.maxX - Layout.veilWidth,
             y: screenFrame.minY
         )
-        panel.setFrame(NSRect(origin: origin, size: NSSize(width: Layout.veilWidth, height: screenFrame.height)), display: true)
+        let targetFrame = NSRect(origin: origin, size: NSSize(width: Layout.veilWidth, height: screenFrame.height))
+        guard panel.frame != targetFrame else { return }
+        panel.setFrame(targetFrame, display: true)
     }
 
     private func dropZone(in frame: NSRect) -> NSRect {
@@ -131,26 +163,36 @@ final class CornerDrawerController: NSObject {
     }
 
     private func scheduleDismissal() {
-        guard panel.isVisible, pendingDismissal == nil else { return }
+        guard presentationState == .revealing || presentationState == .visible,
+              pendingDismissal == nil else { return }
 
         let dismissal = DispatchWorkItem { [weak self] in
             self?.hide()
         }
         pendingDismissal = dismissal
-        DispatchQueue.main.asyncAfter(deadline: .now() + Layout.dismissalDelay, execute: dismissal)
+        let delay = max(Layout.dismissalDelay, revealGraceEndsAt.timeIntervalSinceNow)
+        DispatchQueue.main.asyncAfter(deadline: .now() + delay, execute: dismissal)
     }
 
     private func hide() {
         pendingDismissal = nil
-        guard panel.isVisible else { return }
+        guard presentationState == .revealing || presentationState == .visible else { return }
+
+        presentationState = .dismissing
+        let transitionID = UUID()
+        activeTransitionID = transitionID
 
         NSAnimationContext.runAnimationGroup { context in
-            context.duration = 0.15
+            context.duration = Layout.dismissalDuration
             context.timingFunction = CAMediaTimingFunction(name: .easeIn)
             panel.animator().alphaValue = 0
-        } completionHandler: { [weak panel] in
-            panel?.ignoresMouseEvents = true
-            panel?.orderOut(nil)
+        } completionHandler: { [weak self] in
+            Task { @MainActor in
+                guard let self, self.activeTransitionID == transitionID else { return }
+                self.presentationState = .hidden
+                self.panel.ignoresMouseEvents = true
+                self.panel.orderOut(nil)
+            }
         }
     }
 }
