@@ -3,8 +3,8 @@
 ## Product intent
 
 Somewhere is a local-first native macOS stash for saving things before they have
-a place: images, links, articles, quotes, files, screenshots, text snippets,
-ideas, and optional personal notes.
+a place: images, links, articles, quotes, screenshots, text snippets, ideas, and
+optional personal notes.
 
 The governing product principle is:
 
@@ -20,8 +20,8 @@ decisions. Treat it as the source of truth for the product vision.
   (for example: floating panels, menu bar, edge/corner interactions, or
   cross-app drag and drop).
 - SwiftData stores local item metadata.
-- App-owned files/images will live in Application Support; never rely only on
-  references to user files that may disappear.
+- App-owned images will live in Application Support; never rely only on
+  references to user images that may disappear.
 - Minimum supported OS: macOS 14.0.
 - Keep the app local-first. Do not introduce accounts, cloud sync, analytics,
   or AI dependencies without an explicit product decision.
@@ -49,8 +49,8 @@ decisions. Treat it as the source of truth for the product vision.
 
 ## Near-term implementation order
 
-1. Reliable text, URL, image, and file capture with local persistence.
-2. App-owned file storage and previews.
+1. Reliable text, URL, and image capture with local persistence.
+2. App-owned image storage and previews.
 3. Search, Shuffle, and date-based archive browsing.
 4. Menu-bar and keyboard capture refinements.
 5. Upper-right drag-to-stash drawer, built from an AppKit prototype and tested

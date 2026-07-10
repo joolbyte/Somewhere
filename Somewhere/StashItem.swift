@@ -9,7 +9,6 @@ import SwiftData
 enum StashItemKind: String, CaseIterable, Codable {
     case text
     case link
-    case file
     case image
 
     var displayName: String {
@@ -20,7 +19,6 @@ enum StashItemKind: String, CaseIterable, Codable {
         switch self {
         case .text: "text.quote"
         case .link: "link"
-        case .file: "doc"
         case .image: "photo"
         }
     }
@@ -35,8 +33,6 @@ final class StashItem {
     var note: String?
     var textContent: String?
     var sourceURL: String?
-    var originalFilename: String?
-    var storedFilePath: String?
 
     init(
         kind: StashItemKind,
@@ -44,8 +40,6 @@ final class StashItem {
         note: String? = nil,
         textContent: String? = nil,
         sourceURL: String? = nil,
-        originalFilename: String? = nil,
-        storedFilePath: String? = nil,
         createdAt: Date = .now
     ) {
         self.createdAt = createdAt
@@ -55,8 +49,6 @@ final class StashItem {
         self.note = note
         self.textContent = textContent
         self.sourceURL = sourceURL
-        self.originalFilename = originalFilename
-        self.storedFilePath = storedFilePath
     }
 
     var kind: StashItemKind {
@@ -64,6 +56,6 @@ final class StashItem {
     }
 
     var previewText: String? {
-        textContent ?? sourceURL ?? originalFilename
+        textContent ?? sourceURL
     }
 }
