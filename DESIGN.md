@@ -4,8 +4,8 @@
 
 **Somewhere is a quiet, local-first place for saving things before they have a place.**
 
-It is for images, links, articles, text snippets, quotes, files, screenshots,
-ideas, and small personal notes that resonate but do not belong in a folder,
+It is for images, links, articles, text snippets, quotes, screenshots, ideas,
+and small personal notes that resonate but do not belong in a folder,
 board, task list, or formal note system yet.
 
 > Just drag it to Somewhere.
@@ -54,7 +54,7 @@ When the pointer approaches the activation area during a drag:
 1. A translucent, blurred right-edge veil softly fades in.
 2. The opaque right side contains only the Somewhere wordmark and a native
    macOS search field—no center copy or decorative capture icon.
-3. The user drops the file, image, text, or URL into that right-side area.
+3. The user drops an image, text clipping, or URL into that right-side area.
 4. The item is saved immediately and shown as a card.
 5. An optional low-pressure note field appears; no organization is required.
 
@@ -132,8 +132,11 @@ Items should lead with their actual content rather than an abstract type label:
 - Images lead with a thumbnail.
 - Text leads with the saved text.
 - Links lead with title/domain and later may have a thumbnail.
-- Files lead with a filename and native file icon.
 - Optional notes look like small personal captions, never compulsory metadata.
+
+The outer shell is glass; saved objects have substance. The stash uses an
+editorial mosaic—varied and accumulated, but never a fake-paper scrapbook or
+Pinterest feed.
 
 Dates and source hints remain present but subordinate.
 

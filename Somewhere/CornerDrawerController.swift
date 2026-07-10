@@ -11,8 +11,8 @@ import SwiftUI
 @MainActor
 final class CornerDrawerController: NSObject {
     private enum Layout {
-        static let veilWidth: CGFloat = 560
-        static let interactiveWidth: CGFloat = 340
+        static let veilWidth: CGFloat = 680
+        static let interactiveWidth: CGFloat = 468
         static let activationWidth: CGFloat = 56
         static let activationHeight: CGFloat = 48
         static let trackingInterval: TimeInterval = 1.0 / 60.0
@@ -135,8 +135,8 @@ final class CornerDrawerController: NSObject {
             context.duration = Layout.revealDuration
             context.timingFunction = CAMediaTimingFunction(name: .easeOut)
             panel.animator().alphaValue = 1
-        } completionHandler: { [weak self] in
-            Task { @MainActor in
+        } completionHandler: { [transitionID] in
+            Task { @MainActor [weak self] in
                 guard let self, self.activeTransitionID == transitionID else { return }
                 self.presentationState = .visible
             }
@@ -187,8 +187,8 @@ final class CornerDrawerController: NSObject {
             context.duration = Layout.dismissalDuration
             context.timingFunction = CAMediaTimingFunction(name: .easeIn)
             panel.animator().alphaValue = 0
-        } completionHandler: { [weak self] in
-            Task { @MainActor in
+        } completionHandler: { [transitionID] in
+            Task { @MainActor [weak self] in
                 guard let self, self.activeTransitionID == transitionID else { return }
                 self.presentationState = .hidden
                 self.panel.ignoresMouseEvents = true

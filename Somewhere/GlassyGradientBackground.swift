@@ -34,7 +34,7 @@ final class GradientVisualEffectView: NSView {
 
         gradientMask.startPoint = CGPoint(x: 0, y: 0.5)
         gradientMask.endPoint = CGPoint(x: 1, y: 0.5)
-        gradientMask.locations = [0, 0.16, 0.40, 0.66, 0.86, 1]
+        gradientMask.locations = [0, 0.15, 0.31, 0.54, 0.69, 1]
         gradientMask.colors = [
             NSColor.black.withAlphaComponent(0).cgColor,
             NSColor.black.withAlphaComponent(0.02).cgColor,
@@ -47,7 +47,7 @@ final class GradientVisualEffectView: NSView {
 
         edgeHighlight.startPoint = CGPoint(x: 0, y: 0.5)
         edgeHighlight.endPoint = CGPoint(x: 1, y: 0.5)
-        edgeHighlight.locations = [0, 0.86, 1]
+        edgeHighlight.locations = [0, 0.69, 1]
         edgeHighlight.colors = [
             NSColor.clear.cgColor,
             NSColor.white.withAlphaComponent(0.01).cgColor,
