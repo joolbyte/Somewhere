@@ -271,6 +271,9 @@ private enum DropItemDecoder {
     }
 
     private static func item(forImageFileURL url: URL) -> CornerDrawerSession.Item? {
+        guard let contentType = try? url.resourceValues(forKeys: [.contentTypeKey]).contentType,
+              contentType.conforms(to: .image) else { return nil }
+
         guard let image = NSImage(contentsOf: url) else { return nil }
         return .init(kind: .image(image, name: url.lastPathComponent))
     }
