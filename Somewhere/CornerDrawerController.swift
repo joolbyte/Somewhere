@@ -30,6 +30,7 @@ final class CornerDrawerController: NSObject {
     }
 
     private let panel: NSPanel
+    private let session = CornerDrawerSession()
     private var mouseMonitorTimer: Timer?
     private var pendingDismissal: DispatchWorkItem?
     private var presentationState: PresentationState = .hidden
@@ -56,7 +57,7 @@ final class CornerDrawerController: NSObject {
         panel.isReleasedWhenClosed = false
         panel.ignoresMouseEvents = true
 
-        let drawerView = CornerDrawerView()
+        let drawerView = CornerDrawerView(session: session)
         let hostingView = NSHostingView(rootView: drawerView)
         hostingView.wantsLayer = true
         hostingView.layer?.backgroundColor = NSColor.clear.cgColor
